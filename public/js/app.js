@@ -69919,7 +69919,7 @@ var App = /*#__PURE__*/function (_Component) {
         component: _NewProject__WEBPACK_IMPORTED_MODULE_5__["default"]
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         exact: true,
-        Path: "/:id",
+        Path: "/id",
         component: _SingleProject__WEBPACK_IMPORTED_MODULE_6__["default"]
       }))));
     }

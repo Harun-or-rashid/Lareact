@@ -17,7 +17,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' component={ProjectsList} />
                         <Route exact path='/create' component={NewProject} />
-                        <Route exact Path='/:id' component={SingleProject}/>
+                        <Route exact Path='/id' component={SingleProject}/>
                     </Switch>
                 </div>
             </BrowserRouter>
