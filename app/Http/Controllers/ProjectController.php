@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Project;
 use Illuminate\Http\Request;
+use function MongoDB\BSON\toJSON;
 
 class ProjectController extends Controller
 {
@@ -13,8 +15,15 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects=Project::where('is_completed',false)
+            ->orderBy('created_at','desc')
+            ->withCount(['tasks' => function ($query) {
+                $query->where('is_completed', false);
+            }])
+            ->get();
+        return $projects->toJson();
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +43,17 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        $project = Project::create([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+        ]);
+
+        return response()->json('Project created!');
     }
 
     /**
@@ -45,7 +64,11 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        //
+        $project = Project::with(['tasks' => function ($query) {
+            $query->where('is_completed', false);
+        }])->find($id);
+
+        return $project->toJson();
     }
 
     /**
@@ -80,5 +103,12 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function markAsCompleted(Project $project)
+    {
+        $project->is_completed = true;
+        $project->update();
+
+        return response()->json('Project updated!');
     }
 }
